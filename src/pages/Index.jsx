@@ -1,7 +1,19 @@
 import { Box, Container, VStack, HStack, Input, Button, Text, Flex, Link, Spacer } from "@chakra-ui/react";
+import { useState, useEffect } from 'react';
+import { fetchJobListings } from '../backend/jobApplicationHandler';
 import { FaHome, FaBriefcase, FaUser, FaCog, FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
 
 const Index = () => {
+  const [jobListings, setJobListings] = useState([]);
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      const jobs = await fetchJobListings('software engineer');
+      setJobListings(jobs);
+    };
+    fetchJobs();
+  }, []);
+
   return (
     <Box>
       {/* Navigation Bar */}
@@ -26,17 +38,13 @@ const Index = () => {
 
         {/* Job Listings */}
         <VStack spacing={4} mt={10} align="stretch">
-          <Box p={5} shadow="md" borderWidth="1px">
-            <Text fontWeight="bold" fontSize="xl">Software Engineer</Text>
-            <Text mt={2}>Company XYZ - New York, NY</Text>
-            <Button colorScheme="blue" mt={4}>Apply</Button>
-          </Box>
-          <Box p={5} shadow="md" borderWidth="1px">
-            <Text fontWeight="bold" fontSize="xl">Product Manager</Text>
-            <Text mt={2}>Company ABC - San Francisco, CA</Text>
-            <Button colorScheme="blue" mt={4}>Apply</Button>
-          </Box>
-          {/* Add more job listings as needed */}
+          {jobListings.map((job, index) => (
+            <Box key={index} p={5} shadow="md" borderWidth="1px">
+              <Text fontWeight="bold" fontSize="xl">{job.title}</Text>
+              <Text mt={2}>{job.company} - {job.location}</Text>
+              <Button colorScheme="blue" mt={4}>Apply</Button>
+            </Box>
+          ))}
         </VStack>
       </Container>
 
