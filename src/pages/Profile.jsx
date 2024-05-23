@@ -1,7 +1,16 @@
 import { Box, Container, VStack, HStack, Input, Button, Text, Flex, Link, Spacer } from "@chakra-ui/react";
 import { FaHome, FaBriefcase, FaUser, FaCog, FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
+import { useState } from "react";
 
-const Index = () => {
+const Profile = () => {
+  const [resume, setResume] = useState(null);
+
+  const handleResumeUpload = (event) => {
+    const file = event.target.files[0];
+    setResume(file);
+    // Logic to upload the resume to the backend will go here
+  };
+
   return (
     <Box>
       {/* Navigation Bar */}
@@ -11,7 +20,7 @@ const Index = () => {
           <HStack spacing={4}>
             <Link href="/"><FaHome /> Home</Link>
             <Link href="#"><FaBriefcase /> Jobs</Link>
-            <Link href="/profile"><FaUser /> Profile</Link> {/* Update Profile link */}
+            <Link href="/profile"><FaUser /> Profile</Link>
             <Link href="#"><FaCog /> Settings</Link>
           </HStack>
         </HStack>
@@ -20,23 +29,10 @@ const Index = () => {
       {/* Main Section */}
       <Container maxW="container.lg" mt={10}>
         <VStack spacing={4}>
-          <Input placeholder="Search for jobs..." size="lg" />
-          <Button colorScheme="blue" size="lg">Search</Button>
-        </VStack>
-
-        {/* Job Listings */}
-        <VStack spacing={4} mt={10} align="stretch">
-          <Box p={5} shadow="md" borderWidth="1px">
-            <Text fontWeight="bold" fontSize="xl">Software Engineer</Text>
-            <Text mt={2}>Company XYZ - New York, NY</Text>
-            <Button colorScheme="blue" mt={4}>Apply</Button>
-          </Box>
-          <Box p={5} shadow="md" borderWidth="1px">
-            <Text fontWeight="bold" fontSize="xl">Product Manager</Text>
-            <Text mt={2}>Company ABC - San Francisco, CA</Text>
-            <Button colorScheme="blue" mt={4}>Apply</Button>
-          </Box>
-          {/* Add more job listings as needed */}
+          <Text fontSize="2xl" fontWeight="bold">Upload Your Resume</Text>
+          <Input type="file" accept=".pdf,.doc,.docx" onChange={handleResumeUpload} />
+          {resume && <Text mt={2}>Uploaded: {resume.name}</Text>}
+          <Button colorScheme="blue" size="lg">Save</Button>
         </VStack>
       </Container>
 
@@ -57,4 +53,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Profile;
